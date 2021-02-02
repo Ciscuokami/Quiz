@@ -1,0 +1,116 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+body {
+    background-color: #280866;
+}
+
+@media screen and (max-width: 425px) { /*mobil*/
+    #PantallaInicio{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+
+    }
+
+    #divInicio{
+        width: 100%;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    #imgInicio{
+        width: 100%;
+    }
+
+    #btnComenzar {
+        width: 50%;
+        position: absolute;
+        left: 50%;
+        top: 103%;
+        transform: translate(-50%, -50%);
+    }
+
+    /* Pantalla Preguntas-Respuestas */
+    /* #PantallaJuego{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+
+    }
+
+    #div{
+        width: 100%;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    } */
+
+    #divJuego{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        background-color: #e43ecb;
+    }
+
+    #divInicio2 {
+        width: 100%;
+        height: 85%;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #790887;
+    }
+
+    #question{
+        width: 100%;
+        height: 18%;
+        background-color:  #e43ecb;
+    }
+
+    #answers{
+        width: 100%;
+        height: 80%;
+        background-color: #49dbf3;
+    }
+
+    .btnAns{
+        width: 90%;
+        height: 10%;
+    }
+}
+
+@media screen and (min-width: 426px) { /*tablet*/
+    #PantallaInicio{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+    }
+
+    #divInicio{
+        width: 100%;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    #imgInicio{
+        width: 100%;
+    }
+
+    #btnComenzar {
+        width: 50%;
+        position: absolute;
+        left: 50%;
+        top: 103%;
+        transform: translate(-50%, -50%);
+    }
+}
