@@ -1,101 +1,83 @@
-// const questionsPack = {
-//     "questions": [
-//         {
-//             "question": "What is the correct JavaScript syntax to change the content of the HTML element below?",
-//             "answers": [
-//                 "document.getElementByName(\"p\").innerHTML = \"Hello World!\";",
-//                 "document.getElementById(\"demo\").innerHTML = \"Hello World!\";",
-//                 "#demo.innerHTML = \"Hello World!\";",
-//                 "document.getElement(\"p\").innerHTML = \"Hello World!\";"
-//             ],
-//             "correctAnswer": 2
-//         },
-//         {
-//             "question": "Which event occurs when the user clicks on an HTML element?",
-//             "answers": [
-//                 "onmouseover",
-//                 "onmouseclick",
-//                 "onclick",
-//                 "onchange"
-//             ],
-//             "correctAnswer": 3
-//         },
-//         {
-//             "question": "Where is the correct place to insert a JavaScript?",
-//             "answers": [
-//                 "Both the <head> section and the <body> section are correct",
-//                 "The <footer>",
-//                 "The <body> section",
-//                 "The <head> section"
-//             ],
-//             "correctAnswer": 3
-//         },
-//         {
-//             "question": "Inside which HTML element do we put the JavaScript?",
-//             "answers": [
-//                 "<script>",
-//                 "<js>",
-//                 "<javascript>",
-//                 "<scripting>"
-//             ],
-//             "correctAnswer": 2
-//         },
-//         {
-//             "question": "How to write an IF statement for executing some code if \"i\" is NOT equal to 5?",
-//             "answers": [
-//                 "if i =! 5 then",
-//                 "if (i <> 5)",
-//                 "if i <> 5",
-//                 "if (i != 5)"
-//             ],
-//             "correctAnswer": 3
-//         },
-//         {
-//             "question": "How does a FOR loop start?",
-//             "answers": [
-//                 "for (i <= 5; i++)",
-//                 "for i = 1 to 5",
-//                 "for (i = 0; i <= 5; i++)",
-//                 "for (i = 0; i <= 5)"
-//             ],
-//             "correctAnswer": 1
-//         },
-//         {
-//             "question": "Which operator is used to assign a value to a variable?",
-//             "answers": [
-//                 "x",
-//                 "*",
-//                 "-",
-//                 "="
-//             ],
-//             "correctAnswer": 0
-//         }
-//     ]
-// }
+// class PantallaJuego {
+//     constructor (questions) {
 
-function paintQuestions(questions) {
+//     }
+
+//     paintQuestions(questions) {
+//         const body = document.querySelector("body");
+
+//         const divJuego = document.createElement("div")
+//         const container = document.createElement("div");
+
+//         divJuego.id = "divJuego";
+//         container.id = "divInicio2"
+        // let contentQuestion = this.questions[this.questionNumber];
+//         questions.map(preguntas => {
+//             const containerPregunta = document.createElement("div");
+//             const containerRespuestas = document.createElement("div");
+//             const preguntaP = document.createElement("p");
+//             const respuestasP = document.createElement("p");
+            // console.log(preguntas)
+//             containerPregunta.id = "question";
+//             containerRespuestas.id = "answers"
+
+//             preguntaP.innerText = preguntas.question;
+//             respuestasP.innerText = preguntas.answers;
+
+//             container.appendChild(containerPregunta);
+//             container.appendChild(containerRespuestas);
+//             containerPregunta.appendChild(preguntaP);
+//             containerRespuestas.appendChild(respuestasP);
+
+//             for (i = 0; i <= length; i++) {
+//                 const length = preguntas.answers.length;
+//                 const btnAnswer = document.createElement("button");
+//                 btnAnswer.className = "btnAns";
+//                 btnAnswer.innerText = preguntas.answer[i];
+//                 btnAnswer.addEventListener("click", () => responseValidator(preguntas.correctAnswer, btnAnswer.id));
+//                 btnAnswer.id = `btnAnswer${i}`;
+//                 divAnswers.appendChild(btnAnswer);
+//             }
+//             return containerPregunta;
+//         })
+
+//         body.appendChild(divJuego);
+//         divJuego.appendChild(container);
+//     };
+// };
+
+let questions = null;
+let currentQuestion = 0;
+// La útltima que funciona
+function paintQuestion(question) {
     const body = document.querySelector("body");
 
     const container = document.createElement("div");
 
     container.id = "divInicio2"
 
-    questions.map(preguntas => {
-        const containerPregunta = document.createElement("div");
-        const containerRespuestas = document.createElement("div");
-        const preguntaP = document.createElement("p");
-        const respuestasP = document.createElement("p");
-        console.log(preguntas)
-        containerPregunta.id = "question";
+            const containerPregunta = document.createElement("div");
+            const containerRespuestas = document.createElement("div");
+            const preguntaP = document.createElement("p");
+            console.log( "pregunta:", question)
+            containerPregunta.id = "question";
+            containerRespuestas.id = "answer";
 
-        preguntaP.innerText = preguntas.question;
-        respuestasP.innerText = preguntas.answers;
+            preguntaP.innerText = question.question;
 
-        container.appendChild(containerPregunta);
-        container.appendChild(containerRespuestas);
-        containerPregunta.appendChild(preguntaP);
-        containerRespuestas.appendChild(respuestasP);
-    })
+            containerPregunta.appendChild(preguntaP);
+
+            question.answers.map((answer) => {
+                const respuestaP = document.createElement("p");
+                respuestaP.innerText = answer;
+                containerRespuestas.appendChild(respuestaP);
+                respuestaP.addEventListener("click", ()=>{
+                    container.remove();
+                    paintQuestion(questions[++currentQuestion]);
+                })
+            })
+            container.appendChild(containerPregunta);
+            container.appendChild(containerRespuestas);
     body.appendChild(container);
 };
 
@@ -117,47 +99,14 @@ fetch(`https://quizapi.io/api/v1/questions?apiKey=${API_KEY}&category=code&diffi
     })
 ).then(data => {
         console.log("data: ", data)
-        const {questions} = data;
-        paintQuestions(questions);
+        questions = data.questions;
+        paintQuestion(questions[currentQuestion]);
     });
 };
 
 getQuestions();
 
 
-class PantallaJuego {
-    constructor (questions) {
-
-    }
-
-    divPreguntas() {
-        const divJuego = document.createElement("div")
-        const divInicio = document.createElement("div");
-        const divTitle = document.createElement("div");
-        const divAnswers = document.createElement("div");
-        // let contentQuestion = this.questions[this.questionNumber];
-
-        divJuego.id = "divJuego";
-        divInicio.id = "divInicio2";
-        divTitle.id = "question";
-        divAnswers.id = "answers";
-
-        body.appendChild(divJuego);
-        divJuego.appendChild(divInicio);
-        divInicio.appendChild(divTitle);
-        divInicio.appendChild(divAnswers);
-
-        for (i = 0; 1 <= 3; i++) {
-            const btnAnswer = document.createElement("button");
-            btnAnswer.className = "btnAns";
-            btnAnswer.innerText = contentQuestion.answer[i];
-            btnAnswer.addEventListener("click", () => responseValidator(contentQuestion.correctAnswer, btnAnswer.id));
-            btnAnswer.id = `btnAnswer${i}`;
-            divAnswers.appendChild(btnAnswer);
-        }
-        return div;
-    };
-};
 
 // let Juego = new PantallaJuego();
 // Juego.divPreguntas();
@@ -207,10 +156,10 @@ class PantallaJuego {
 
 // class PantallaInicio {
 //     constructor() {
-//         // this.body = document.querySelector("body");
-//         // this.DivInicio;
-//         // this.PantallaInicio;
-//         // this.divInicio();
+        // this.body = document.querySelector("body");
+        // this.DivInicio;
+        // this.PantallaInicio;
+        // this.divInicio();
 //     }
 
 //     divInicio() {
@@ -249,7 +198,7 @@ class PantallaJuego {
 
 
 
-// // Esto ejecuta pantalla Inicio
+// Esto ejecuta pantalla Inicio
 
 // let Inicio = new PantallaInicio();
 // Inicio.divInicio();
