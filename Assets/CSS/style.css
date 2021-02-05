@@ -79,6 +79,23 @@ body {
         background-color: #49dbf3;
     }
 
+    #respuesta{
+        margin-top: 5px;
+        padding: 1px;
+        background-color: #49dbf3;
+    }
+    #right{
+        margin-top: 5px;
+        padding: 1px;
+        background-color:green;
+    }
+
+    #wrong{
+        margin-top: 5px;
+        padding: 1px;
+        background-color: red;
+    }
+    
     .btnAns{
         width: 90%;
         height: 10%;

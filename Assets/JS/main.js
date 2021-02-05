@@ -46,40 +46,105 @@
 //     };
 // };
 
+const body = document.querySelector("body");
+
+const containerGeneral = document.createElement("div");
+
+body.appendChild(containerGeneral);
+
+containerGeneral.id = "divInicio2"
+
 let questions = null;
 let currentQuestion = 0;
-// La útltima que funciona
+let respuestasOK = 0;
+let respuestasKO = 0;
+
+/*
+===========================================
+    Corregir preguntas
+===========================================
+*/
+
+function validarQuestion(question, rightAnswer, answer, respuestaP) {
+
+    if (answer === question.answers[rightAnswer]) {
+        console.log("respuesta correcta");
+        respuestaP.id = "right";
+        respuestasOK++;
+        // alert("¡Has acertado!");
+    } else {
+        console.log("error");
+        respuestaP.id = "wrong";
+        // alert("La repuesta correcta era: " + question.answers[rightAnswer]);
+        respuestasKO++;
+        // alert("¡Fallaste!");
+    }
+
+//     for( i=0;  i < question.length; i++ ) {
+//         if( question[i] == rightAnswer) {
+//             console.log("respuesta correcta")
+//             break;
+//        }
+//    }
+};
+
+/*
+===========================================
+    Pintar preguntas
+===========================================
+*/
+
 function paintQuestion(question) {
-    const body = document.querySelector("body");
+
 
     const container = document.createElement("div");
 
     container.id = "divInicio2"
 
-            const containerPregunta = document.createElement("div");
-            const containerRespuestas = document.createElement("div");
-            const preguntaP = document.createElement("p");
-            console.log( "pregunta:", question)
-            containerPregunta.id = "question";
-            containerRespuestas.id = "answer";
 
-            preguntaP.innerText = question.question;
+    const containerPregunta = document.createElement("div");
+    const containerRespuestas = document.createElement("div");
+    const preguntaP = document.createElement("p");
+    console.log( "pregunta:", question)
+    containerPregunta.id = "question";
+    containerRespuestas.id = "answer";
 
-            containerPregunta.appendChild(preguntaP);
+    preguntaP.innerText = question.question;
 
-            question.answers.map((answer) => {
-                const respuestaP = document.createElement("p");
-                respuestaP.innerText = answer;
-                containerRespuestas.appendChild(respuestaP);
-                respuestaP.addEventListener("click", ()=>{
-                    container.remove();
-                    paintQuestion(questions[++currentQuestion]);
-                })
-            })
-            container.appendChild(containerPregunta);
-            container.appendChild(containerRespuestas);
+    containerPregunta.appendChild(preguntaP);
+
+    const rightAnswer = question.correctAnswer;
+    console.log("rightAnswer:", rightAnswer);
+
+    console.log("answers:", question.answers);
+    question.answers.map((answer) => {
+        const respuestaP = document.createElement("p");
+        respuestaP.id = "respuesta";
+        respuestaP.innerText = answer;
+
+        containerRespuestas.appendChild(respuestaP);
+        respuestaP.addEventListener("click", ()=>{
+            validarQuestion(question, rightAnswer, answer, respuestaP);
+            // container.remove();
+            if (currentQuestion < 9){
+            paintQuestion(questions[++currentQuestion]);
+            } else {
+                marcador();
+            }
+        })
+    })
+    containerGeneral.appendChild(container);
+    container.appendChild(containerPregunta);
+    container.appendChild(containerRespuestas);
     body.appendChild(container);
 };
+
+
+/*
+===========================================
+    Pedir preguntas
+===========================================
+*/
 
 function getQuestions() {
 const API_KEY = "U5QAVxNrA6nMzvi9KAm29DS2Pg7pL2R5DMlcdB7w";
@@ -151,9 +216,35 @@ getQuestions();
 //         questions.remove();
 //     }
 
+/*
+===========================================
+    Marcador
+===========================================
+*/
+
+function marcador() {
+    containerGeneral.remove();
+
+    const container2 = document.createElement("div");
+    const respuestasOKP = document.createElement("p");
+    const respuestasKOP = document.createElement("p");
+
+    respuestasOKP.innerText = "RESPUESTAS ACERTADAS: ", respuestasOK;
+    respuestasKOP.innerText = "RESPUESTAS FALLADAS: ", respuestasKO;
+
+    container2.id = "divInicio2"
+
+    body.appendChild(container2);
+    container2.appendChild(respuestasOKP);
+    container2.appendChild(respuestasKOP);
+};
 
 
-
+/*
+===========================================
+    Pantalla inicio
+===========================================
+*/
 // class PantallaInicio {
 //     constructor() {
         // this.body = document.querySelector("body");
