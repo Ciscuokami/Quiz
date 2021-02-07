@@ -1,51 +1,3 @@
-// class PantallaJuego {
-//     constructor (questions) {
-
-//     }
-
-//     paintQuestions(questions) {
-//         const body = document.querySelector("body");
-
-//         const divJuego = document.createElement("div")
-//         const container = document.createElement("div");
-
-//         divJuego.id = "divJuego";
-//         container.id = "divInicio2"
-        // let contentQuestion = this.questions[this.questionNumber];
-//         questions.map(preguntas => {
-//             const containerPregunta = document.createElement("div");
-//             const containerRespuestas = document.createElement("div");
-//             const preguntaP = document.createElement("p");
-//             const respuestasP = document.createElement("p");
-            // console.log(preguntas)
-//             containerPregunta.id = "question";
-//             containerRespuestas.id = "answers"
-
-//             preguntaP.innerText = preguntas.question;
-//             respuestasP.innerText = preguntas.answers;
-
-//             container.appendChild(containerPregunta);
-//             container.appendChild(containerRespuestas);
-//             containerPregunta.appendChild(preguntaP);
-//             containerRespuestas.appendChild(respuestasP);
-
-//             for (i = 0; i <= length; i++) {
-//                 const length = preguntas.answers.length;
-//                 const btnAnswer = document.createElement("button");
-//                 btnAnswer.className = "btnAns";
-//                 btnAnswer.innerText = preguntas.answer[i];
-//                 btnAnswer.addEventListener("click", () => responseValidator(preguntas.correctAnswer, btnAnswer.id));
-//                 btnAnswer.id = `btnAnswer${i}`;
-//                 divAnswers.appendChild(btnAnswer);
-//             }
-//             return containerPregunta;
-//         })
-
-//         body.appendChild(divJuego);
-//         divJuego.appendChild(container);
-//     };
-// };
-
 const body = document.querySelector("body");
 
 const containerGeneral = document.createElement("div");
@@ -55,7 +7,7 @@ body.appendChild(containerGeneral);
 containerGeneral.id = "divInicio2"
 
 let questions = null;
-let currentQuestion = 0;
+// let currentQuestion = 0;
 let respuestasOK = 0;
 let respuestasKO = 0;
 
@@ -64,28 +16,26 @@ let respuestasKO = 0;
     Corregir preguntas
 ===========================================
 */
+function resetMarcador (respuestasOK, respuestasKO) {
+    if (respuestasOK + respuestasKO === 10) {
+        let respuestasOK = 0;
+        let respuestasKO = 0;
+    };
+};
+
 
 function validarQuestion(question, rightAnswer, answer, respuestaP) {
 
     if (answer === question.answers[rightAnswer]) {
-        console.log("respuesta correcta");
         respuestaP.id = "right";
         respuestasOK++;
         // alert("¡Has acertado!");
     } else {
-        console.log("error");
         respuestaP.id = "wrong";
-        // alert("La repuesta correcta era: " + question.answers[rightAnswer]);
+        alert("La repuesta correcta era: " + question.answers[rightAnswer]);
         respuestasKO++;
         // alert("¡Fallaste!");
-    }
-
-//     for( i=0;  i < question.length; i++ ) {
-//         if( question[i] == rightAnswer) {
-//             console.log("respuesta correcta")
-//             break;
-//        }
-//    }
+    };
 };
 
 /*
@@ -99,24 +49,22 @@ function paintQuestion(question) {
 
     const container = document.createElement("div");
 
-    container.id = "divInicio2"
+    container.id = "divJuego"
 
 
     const containerPregunta = document.createElement("div");
     const containerRespuestas = document.createElement("div");
     const preguntaP = document.createElement("p");
-    console.log( "pregunta:", question)
-    containerPregunta.id = "question";
-    containerRespuestas.id = "answer";
+    preguntaP.id = "question";
+    containerPregunta.id = "divQuestion";
+    containerRespuestas.id = "divAnswer";
 
     preguntaP.innerText = question.question;
 
     containerPregunta.appendChild(preguntaP);
 
     const rightAnswer = question.correctAnswer;
-    console.log("rightAnswer:", rightAnswer);
 
-    console.log("answers:", question.answers);
     question.answers.map((answer) => {
         const respuestaP = document.createElement("p");
         respuestaP.id = "respuesta";
@@ -125,7 +73,7 @@ function paintQuestion(question) {
         containerRespuestas.appendChild(respuestaP);
         respuestaP.addEventListener("click", ()=>{
             validarQuestion(question, rightAnswer, answer, respuestaP);
-            // container.remove();
+            container.remove();
             if (currentQuestion < 9){
             paintQuestion(questions[++currentQuestion]);
             } else {
@@ -163,58 +111,16 @@ fetch(`https://quizapi.io/api/v1/questions?apiKey=${API_KEY}&category=code&diffi
 		})
     })
 ).then(data => {
-        console.log("data: ", data)
+        currentQuestion = 0;
         questions = data.questions;
         paintQuestion(questions[currentQuestion]);
     });
 };
 
-getQuestions();
+// getQuestions();
 
 
 
-// let Juego = new PantallaJuego();
-// Juego.divPreguntas();
-
-//     divPreguntas() {
-//         this.responseChecked = false;
-//         divTitle.innerText = this.question;
-
-
-//     };
-
-//     responseValidator(a, b) {
-//         if(!responseChecked) {
-//             responseChecked = true;
-//             questionNumber++;
-//             selected = parseInt(b.substring(6, 7), 10);
-//             console.log(a, selected);
-//             if (a === selected) {
-//                 document.getElementById(b).className = "btnResponse ok";
-//             } else {
-//                 document.getElementById(b).className = "btnResponse error";
-//             }
-//             if(questionNumber === totalQuestions) {
-//                 const finishTitle = document.createElement("div");
-//                 finishTitle.innerText = "¡Juego Terminado! Has acertado " + this.hits + " preguntas";
-//                 finishTitle.id = "hits";
-//                 const where = document.getElementById("answers");
-//                 where.appendChild(finishTitle);
-//                 console.log("Se han acabado las preguntas");
-//             } else {
-//                 const btContiue = document.createElement("button");
-//                 btContiue.innerText = "continuar";
-//                 btContiue.id = "btnContinue";
-//                 btContiue.addEventListener("click", () => removeQuestions());
-//                 const where = document.getElementById("answers");
-//                 where.appendChild(btContiue);
-//             }
-//         }
-//     };
-
-//     removeQuestions() {
-//         questions.remove();
-//     }
 
 /*
 ===========================================
@@ -229,76 +135,74 @@ function marcador() {
     const respuestasOKP = document.createElement("p");
     const respuestasKOP = document.createElement("p");
 
-    respuestasOKP.innerText = "RESPUESTAS ACERTADAS: ", respuestasOK;
-    respuestasKOP.innerText = "RESPUESTAS FALLADAS: ", respuestasKO;
 
-    container2.id = "divInicio2"
+    respuestasOKP.innerText = "RESPUESTAS ACERTADAS: " + respuestasOK;
+    respuestasKOP.innerText = "RESPUESTAS FALLADAS: " + respuestasKO;
+
+    respuestasOKP.id = "RespuestasOK";
+    respuestasKOP.id = "RespuestasKO";
+    container2.id = "divMarcador"
 
     body.appendChild(container2);
     container2.appendChild(respuestasOKP);
     container2.appendChild(respuestasKOP);
+    Restart(container2);
+
 };
 
+/*
+===========================================
+    Reiniciar Juego
+===========================================
+*/
+
+function Restart(container2) {
+    const DivRestart = document.createElement("div");
+    const btnRestart = document.createElement("button");
+    btnRestart.innerText = "Restart";
+    btnRestart.id = "btnRestart";
+    body.appendChild(container2);
+    container2.appendChild(DivRestart);
+    DivRestart.appendChild(btnRestart);
+
+    btnRestart.addEventListener("click", () => {
+            containerGeneral.remove();
+            // let Juego = new PantallaJuego();
+            // Juego.divPreguntas();
+            getQuestions();
+    });
+};
 
 /*
 ===========================================
     Pantalla inicio
 ===========================================
 */
-// class PantallaInicio {
-//     constructor() {
-        // this.body = document.querySelector("body");
-        // this.DivInicio;
-        // this.PantallaInicio;
-        // this.divInicio();
-//     }
+function pantallaInicio() {
 
-//     divInicio() {
-//         const DivInicio = document.createElement("div");
-//         const imgInicio = document.createElement("img");
-//         const PantallaInicio = document.createElement("div");
+    const DivInicio = document.createElement("div");
+    const imgInicio = document.createElement("img");
+    const PantallaInicio = document.createElement("div");
 
-//         body.appendChild(PantallaInicio);
-//         PantallaInicio.appendChild(DivInicio);
-//         DivInicio.appendChild(imgInicio);
+    body.appendChild(PantallaInicio);
+    PantallaInicio.appendChild(DivInicio);
+    DivInicio.appendChild(imgInicio);
 
-//         PantallaInicio.id = "PantallaInicio";
-//         DivInicio.id = "divInicio";
-//         imgInicio.id = "imgInicio";
-//         imgInicio.src = "../Assets/Imagenes/quiz.jpeg";
-//         imgInicio.alt = "";
+    PantallaInicio.id = "PantallaInicio";
+    DivInicio.id = "divInicio";
+    imgInicio.id = "imgInicio";
+    imgInicio.src = "../Assets/Imagenes/quiz.jpeg";
+    imgInicio.alt = "";
 
-//         const btncomenzar = document.createElement("button");
-//         DivInicio.appendChild(btncomenzar);
-//         btncomenzar.innerText = "Play Game";
-//         btncomenzar.id = "btnComenzar";
+    const btncomenzar = document.createElement("button");
+    DivInicio.appendChild(btncomenzar);
+    btncomenzar.innerText = "Play Game";
+    btncomenzar.id = "btnComenzar";
 
-//         btncomenzar.addEventListener("click", () => {
-//                 if ("click") {
-//                     divInicio.remove();
-//                     let Juego = new PantallaJuego();
-//                     Juego.divPreguntas();
+    btncomenzar.addEventListener("click", () => {
+        PantallaInicio.remove();
+        getQuestions();
+    });
+};
 
-//                 };
-//                 });
-//     }
-// };
-
-
-
-
-
-
-// Esto ejecuta pantalla Inicio
-
-// let Inicio = new PantallaInicio();
-// Inicio.divInicio();
-
-
-// class Juego; Pantalla con la pregunta y las posibles respuestas.
-
-
-
-
-// class Pregunta;
-// class PantallaFinal;
+pantallaInicio();
